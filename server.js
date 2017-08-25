@@ -21,14 +21,14 @@ app.get('/', (req, res, next) => {
 
 app.use('/wiki', require('./routes/wiki'));
 
-app.use((req, res, next) => {
-  const error = new Error(`Page ${req.url} not found.`);
-  error.status = 404;
-  next(error);
-});
+// app.use((req, res, next) => {
+//   const error = new Error(`Page ${req.url} not found.`);
+//   error.status = 404;
+//   next(error);
+// });
 
 app.use((err, req, res, next) => {
-  res.status(err.status || 500).send(err.message || 'Internal error.');
+  res.render('error', { err });
   next();
 });
 

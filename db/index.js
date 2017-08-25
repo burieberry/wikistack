@@ -8,13 +8,16 @@ const Page = conn.define('page', {
   },
   urlTitle: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   },
   content: {
-    type: Sequelize.TEXT
+    type: Sequelize.TEXT,
+    allowNull: false
   },
   status: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    defaultValue: 'open'
   },
   route: {
     type: Sequelize.VIRTUAL,
@@ -46,7 +49,28 @@ const User = conn.define('user', {
   timestamps: false
 });
 
-Page.belongsTo(User);
+User.createUser = function(userData) {
+  return this.create(userData);
+};
+
+User.findUser = function(userData) {
+  return this.findOne({
+    where: {
+      name: userData.name,
+      email: userData.email
+    }
+  })
+};
+
+Page.createPage = function(pageData, user) {
+  return this.create(pageData)
+    .then(page => {
+      if (user) page.setAuthor(user);
+      return page;
+    })
+};
+
+Page.belongsTo(User, { as: 'author' });
 
 const sync = () => {
   return conn.sync({ force: true });
