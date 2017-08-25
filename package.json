@@ -5,9 +5,19 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "start:dev": "DATABASE_URL=postgres://localhost/wikistack nodemon server.js"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.4",
+    "morgan": "^1.8.2",
+    "nodemon": "^1.11.0",
+    "nunjucks": "^3.0.1",
+    "path": "^0.12.7",
+    "sequelize": "^4.7.5"
+  }
 }
