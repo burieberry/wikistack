@@ -16,8 +16,10 @@ app.use(bodyParser.json());
 app.use('/', express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res, next) => {
-  res.send('oh hi');
+  res.redirect('/wiki');
 });
+
+app.use('/wiki', require('./routes/wiki'));
 
 app.use((req, res, next) => {
   const error = new Error(`Page ${req.url} not found.`);
@@ -35,6 +37,7 @@ const db = require('./db');
 
 app.listen(port, () => {
   db.sync()
+    .then(db.seed)
     .then(() => {
       console.log(`Listening on port ${port}.`);
     })
