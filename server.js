@@ -13,6 +13,8 @@ app.use(require('morgan')('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use('/', express.static(path.join(__dirname, 'public')));
+
 app.get('/', (req, res, next) => {
   res.send('oh hi');
 });
