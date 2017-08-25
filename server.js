@@ -3,6 +3,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const nunjucks = require('nunjucks');
 const env = nunjucks.configure('views', { noCache: true });
+const db = require('./db');
 
 const app = express();
 app.set('view engine', 'html');
@@ -21,19 +22,17 @@ app.get('/', (req, res, next) => {
 
 app.use('/wiki', require('./routes/wiki'));
 
-// app.use((req, res, next) => {
-//   const error = new Error(`Page ${req.url} not found.`);
-//   error.status = 404;
-//   next(error);
-// });
+app.use((req, res, next) => {
+  const error = new Error('Page not found.');
+  error.status = 404;
+  next(error);
+});
 
 app.use((err, req, res, next) => {
   res.render('error', { err });
-  next();
 });
 
 const port = process.env.PORT || 3000;
-const db = require('./db');
 
 app.listen(port, () => {
   db.sync()

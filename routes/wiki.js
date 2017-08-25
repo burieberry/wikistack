@@ -21,36 +21,18 @@ router.post('/', (req, res, next) => {
       if (!user) {
         return User.createUser(req.body)
           .then(user => {
-            return Page.createPage(req.body, user)
+            return Page.createPage(req.body, user);
           })
           .then(page => {
-            console.log(page.get());
             res.redirect(page.route);
           })
-      }
+        }
 
-      else return Page.createPage(req.body, user)
+      return Page.createPage(req.body, user)
         .then(page => {
-          console.log(page.get());
           res.redirect(page.route);
         })
     })
-
-  // return User.findOne({
-  //     where: {
-  //       name: req.body.name,
-  //       email: req.body.email
-  //     }
-  //   })
-  //   .then(user => {
-  //     return Page.create(req.body)
-  //       .then(page => {
-  //         return page.setAuthor(user);
-  //       })
-  //   })
-  //   .then(page => {
-  //     res.redirect(page.route);
-  //   })
     .catch(next);
 });
 
@@ -62,7 +44,11 @@ router.get('/:url', (req, res, next) => {
       include: [{ model: User, as: 'author' }]
     })
     .then(page => {
-      if (!page) return res.sendStatus(404);
+      if (!page) {
+        const error = new Error('Page not found.');
+        error.status = 404;
+        throw error;
+      }
       res.render('wikipage', { page });
     })
     .catch(next);
