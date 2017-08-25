@@ -16,18 +16,8 @@ router.get('/add', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-  return User.findUser(req.body)
+  return User.findOrCreateUser(req.body)
     .then(user => {
-      if (!user) {
-        return User.createUser(req.body)
-          .then(user => {
-            return Page.createPage(req.body, user);
-          })
-          .then(page => {
-            res.redirect(page.route);
-          })
-        }
-
       return Page.createPage(req.body, user)
         .then(page => {
           res.redirect(page.route);
