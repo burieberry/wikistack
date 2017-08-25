@@ -21,6 +21,7 @@ app.get('/', (req, res, next) => {
 });
 
 app.use('/wiki', require('./routes/wiki'));
+app.use('/users', require('./routes/users'));
 
 app.use((req, res, next) => {
   const error = new Error('Page not found.');

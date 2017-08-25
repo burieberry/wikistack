@@ -44,14 +44,16 @@ router.get('/:url', (req, res, next) => {
       include: [{ model: User, as: 'author' }]
     })
     .then(page => {
-      if (!page) {
-        const error = new Error('Page not found.');
-        error.status = 404;
-        throw error;
-      }
+      if (!page) generateErr('Page not found.', 404);
       res.render('wikipage', { page });
     })
     .catch(next);
 });
+
+function generateErr(msg, status) {
+  const error = new Error(msg);
+  error.status = status;
+  throw error;
+}
 
 module.exports = router;
