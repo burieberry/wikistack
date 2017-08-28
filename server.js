@@ -9,7 +9,7 @@ const app = express();
 app.set('view engine', 'html');
 app.engine('html', nunjucks.render);
 
-app.use(require('morgan')('dev'));
+// app.use(require('morgan')('dev'));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -19,7 +19,11 @@ app.use(require('method-override')('_method'));
 app.use('/', express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res, next) => {
-  res.redirect('/wiki');
+  return db.models.Page.findAll()
+    .then(pages => {
+      res.render('index', { pages });
+    })
+    .catch(next);
 });
 
 app.use('/wiki', require('./routes/wiki'));
