@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const nunjucks = require('nunjucks');
-const env = nunjucks.configure('views', { noCache: true });
+nunjucks.configure('views', { noCache: true });
 const db = require('./db');
 
 const app = express();
