@@ -14,6 +14,8 @@ app.use(require('morgan')('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use(require('method-override')('_method'));
+
 app.use('/', express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res, next) => {
